@@ -1,0 +1,32 @@
+sudo nano /etc/netplan/00-installer-config.yaml
+sudo netplan try
+apt-get update
+apt install isc-dhcp-server
+sudo nano /etc/dhcp/dhcpd.conf
+	rangos:
+	subnet x.x.x.x (red) netmask x.x.x.x {
+	range x.x.x.x x.x.x.x;
+	option routers x.x.x.x (ip router su red);
+	}
+	
+	reserva:
+	host nombre-cualquiera {
+	hardware ethernet XX:XX:XX:XX:XX:XX (su dirección MAC);
+	fixed-address x.x.x.x (dirección a reservar);
+	}
+	
+sudo nano /etc/default/isc-dhcp-server
+	INTERFACES v4= "enp0sx enp0sy" (tarjetas de las redes en las que actúa el servidor)
+	
+windows:
+	ipconfig /release
+	ipconfig /renew
+	
+Servidor relay:
+Esto es guiado, pero hay que poner la siguiente información:
+- Servers: IP del servidor principal
+- Interfaces: Interfaz de red por la que actúa
+- Options: (se puede dejar vacío)
+
+Si se necesita cambiar algo, hay que editar:
+sudo nano /etc/default/isc-dhcp-relay
