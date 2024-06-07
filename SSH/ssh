@@ -1,0 +1,41 @@
+sudo apt-get update
+sudo apt install openssh-server
+cd /etc/ssh
+sudo nano sshd_config
+    LoginGraceTime
+    MaxAuthTries
+    MaxSessions
+    AllowUsers xxx
+sudo service sshd restart
+-----
+(solo conectarse) ssh -p 2222 administrador@127.0.0.1
+(traer archivo) scp -P 2222 administrador@127.0.0.1:/home/administrador/fichero.txt .
+(enviar archivo) scp -P 2222 fichero2.txt administrador@127.0.0.1:/home/administrador/otronombre.txt
+-----
+sudo adduser usuario
+su usuario
+-----
+PubkeyAuthentication yes
+ssh-keygen -t rsa
+(cd .ssh por defecto)
+    id_rsa -> privada
+    id_rsa.pub -> pública
+cp id_rsa.pub authorized_keys
+    scp -P 2222 usuario@127.0.0.1:/home/usuario/.ssh/id_rsa claveusuario
+    ssh -p 2222 -i id_rsa usuario@127.0.0.1
+-----
+(WXP)
+cd ..\..
+cd archivos de programa
+cd putty
+dir
+(traer auth) pscp administrador@172.18.0.1:/home/administrador/.ssh/id_rsa .
+(enviar) pscp -P 2222 "C:\Documents and settings\admin\Escritorio\archivo2.txt usuario@172.18.0.1:/home/usuario/documento7.txt
+(PuTTYgen)
+    Load -> C:/Archivos de programa\PuTTY (All files)
+(PuTTY)
+-Session -> Host Name (IP)
+           Port (puerto)
+    -SSH
+        -Auth
+            -Credentials -> private key file for authentication (generada por PuTTYgen)

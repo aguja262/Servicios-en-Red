@@ -1,0 +1,56 @@
+sudo apt-get update
+sudo apt install apache2
+cd /etc/apache2
+sudo nano ports.conf (cambiar puertos)
+    Listen xx
+    <IfModule ssl_module>
+    Listen 443 (https)
+sudo nano apache2.conf
+cd sites-enabled
+sudo nano 000-default.conf
+    <VirtualHost *:80 (escucha por todas las tarjetas)
+    ServerAdmin xxx@localhost
+    DocumentRoot /var/www/html (donde se encuentran nuestros documentos)
+
+cd sites-available
+sudo 000-default.conf xxx.conf
+xxx.conf ->
+    ServerName www.xxx.x
+        DocumentRoot /var/www/carpeta-nueva
+        Alias /nombreinventado /ruta/real/hasta/archivo
+        Redirect /loquesea http://www.direccion.es o /prueba
+
+        <Directory /var/www/esa-carpeta>
+        Options Indexes/-Indexes (1)
+        DirectoryIndex xxx.html (2)
+        Options FollowSymLinks (3)
+        Order allow,deny (4)
+        allow from all/(ip) (5)
+        deny from all/172.18.0.0/16(ip) (6)
+        ErrorDocument 404 /error404.html (7)
+        </Directory>
+
+crear enlace simbolico -> sudo ln -s /home/administrador/xxx xxx (especificar en wxp)
+cd /var/www (se aloja el html)
+
+sites-available->sites-eabled:
+sudo a2ensite xxx.conf
+
+cd /var/www
+mkdir villablanca
+cd villablanca
+sudo nano index.html
+
+conectarse:
+Internet explorer -> http://172.18.0.1/
+Enla máquina anfitriona (linux, reedirección de puertos) -> http://127.0.0.1:8080
+
+en WXP:
+C:\WINDOWS\system32\drivers\etc\hosts
+    xx.xx.xx.xx     nombre
+
+
+    1 Si no existe el fichero se muestra un listado de lo que hay en la carpeta. poner
+    -Indexes para no mostrar esto
+    2 Primer archivo que aparece enla página
+    3 Seguir los enlaces simbólicos

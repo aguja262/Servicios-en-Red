@@ -1,0 +1,52 @@
+sudo apt-get update
+sudo apt install vsftpd
+cd /etc
+sudo nano vsftpd.conf
+    anonymous_enable=NO/YES
+    local_enable=YES/NO
+    write_enable=YES/NO
+    anon_upload_enable=YES/NO
+    anon_mkdir_write_enable=YES/NO
+
+sudo service vsftpd restart
+
+cd /srv/ftp
+sudo nano ficheroanon.txt
+ls -l
+-----------------
+umask
+ftp -> 022 (predeterminado por el resto de ftp)
+    666 (ficheros)-022=644
+    077 (local vsftpd (predeterminado))
+    666-077=600
+
+    rwx (propietario) rwx (grupo) rwx (resto)
+(6) 110           (0) 000     (0) 000
+-----------------
+-Todos enjaulados
+    chroot_local_user=YES
+    chroot_list_enable=NO
+    allow_writeable_chroot=YES/NO
+-Sin enjaular. Se enjaulan los de la lista
+     chroot_local_user=NO
+     chroot_list_enable=YES
+-Enjaulados. Se liberan los de la lista
+     chroot_local_user=YES
+     chroot_list_enable=YES
+
+negar a todos los locales que estén en la lista
+userlist_deny=Yes
+userlist_enable=Yes
+userlist_file=/etc/vsftpd.user_list
+
+aceptar a todos los locales que estén en la lista
+userlist_deny=No
+userlist_enable=Yes
+userlist_file=/etc/vsftpd.user_list
+-----------------
+(WXP)
+ftp 172.18.0.1
+dir (firewall, comando de control)
+(traer) get fichero.txt
+        get fichero.txt Escritorio\fichero.txt (o otro nombre)
+(subir) put \Escritorio\archivo2.txt
